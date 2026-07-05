@@ -1,0 +1,1 @@
+#la boucle: researcher → writer → critic → (loop) → final
