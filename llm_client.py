@@ -41,6 +41,6 @@ def ask_llm_json(system_prompt: str, user_prompt: str) -> dict:
     """Same as ask_llm but parses the result as JSON. Raises if parsing fails."""
     raw = ask_llm(system_prompt, user_prompt, expect_json=True)
     try:
-        return json.loads(raw)
+        return json.loads(raw, strict=False)
     except json.JSONDecodeError as e:
         raise ValueError(f"LLM did not return valid JSON:\n{raw}") from e
