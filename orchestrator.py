@@ -1,10 +1,11 @@
 """
 Orchestrator
-Wires the three agents together into the feedback loop:
+Wires the three agents together into the multi-strategy pipeline:
 
-    Profiler -> Optimizer -> Benchmarker
-                    ^              |
-                    |___ feedback __|   (up to MAX_ROUNDS)
+    Profiler -> Optimizer (N strategies) -> Benchmarker (tests all, keeps best)
+                                                    |
+                                    if none pass -> single-strategy retry loop
+                                                    (up to MAX_ROUNDS, using feedback)
 
 Run with: python orchestrator.py examples/slow_example_1.py
 """
@@ -13,10 +14,11 @@ import sys
 import json
 
 from agents.profiler import profile_code
-from agents.optimizer import optimize_code
-from agents.benchmarker import benchmark
+from agents.optimizer import optimize_code, generate_strategies
+from agents.benchmarker import benchmark, benchmark_multiple
 
 MAX_ROUNDS = 3
+NUM_STRATEGIES = 3
 
 
 def run_pipeline(filepath: str, args: tuple = ()):
@@ -28,9 +30,37 @@ def run_pipeline(filepath: str, args: tuple = ()):
     print(f"Baseline time: {profiler_report['baseline_time']}s")
     print(f"Top bottlenecks: {profiler_report['bottlenecks']}\n")
 
-    feedback = None
-    for round_num in range(1, MAX_ROUNDS + 1):
-        print(f"=== ROUND {round_num}: OPTIMIZER ===")
+    # --- Round 1: multi-strategy attempt ---
+    print(f"=== ROUND 1: OPTIMIZER (proposing {NUM_STRATEGIES} strategies) ===")
+    strategies = generate_strategies(original_code, profiler_report, NUM_STRATEGIES)
+    for s in strategies:
+        print(f"  - {s['name']}: {s['explanation']}")
+
+    print(f"\n=== ROUND 1: BENCHMARKER (testing all {len(strategies)} strategies) ===")
+    multi_result = benchmark_multiple(original_code, strategies, args)
+
+    for r in multi_result["all_results"]:
+        status = "✅ PASSED" if r["benchmark"]["passed"] else "❌ FAILED"
+        print(f"  {status} — {r['name']}: {r['benchmark']}")
+
+    if multi_result["best"]:
+        best = multi_result["best"]
+        print(f"\n✅ SUCCESS after 1 round. Best strategy: '{best['name']}' — Speedup: {best['benchmark']['speedup']}x")
+        return {
+            "success": True,
+            "rounds": 1,
+            "final_code": best["code"],
+            "explanation": f"{best['name']}: {best['explanation']}",
+            "benchmark": best["benchmark"],
+            "all_strategies_tested": multi_result["all_results"],
+        }
+
+    # --- No strategy passed: fall back to single-strategy retry loop ---
+    print("\n⚠️ None of the strategies passed. Falling back to single-strategy retry loop...\n")
+    feedback = multi_result["all_results"][0]["benchmark"]
+
+    for round_num in range(2, MAX_ROUNDS + 1):
+        print(f"=== ROUND {round_num}: OPTIMIZER (single strategy, using feedback) ===")
         optimization = optimize_code(original_code, profiler_report, feedback)
         print(f"Explanation: {optimization['explanation']}\n")
 
