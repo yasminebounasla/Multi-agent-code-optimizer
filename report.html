@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Agentic Performance Optimizer — Report</title>
+<style>
+:root {
+  --bg: #0f1115;
+  --panel: #161922;
+  --border: #262b36;
+  --text: #e6e8ec;
+  --muted: #9aa3b2;
+  --green: #3ddc84;
+  --red: #ff6b6b;
+  --accent: #5b8cff;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, Segoe UI, Roboto, sans-serif;
+  margin: 0;
+  padding: 40px 24px 80px;
+  line-height: 1.5;
+}
+.container { max-width: 980px; margin: 0 auto; }
+h1 { font-size: 28px; margin-bottom: 4px; }
+.subtitle { color: var(--muted); margin-bottom: 32px; font-size: 14px; }
+.summary-table, .strategy-table, .score-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 32px;
+  font-size: 14px;
+}
+.summary-table th, .strategy-table th, .score-table th {
+  text-align: left;
+  color: var(--muted);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  padding: 8px 10px;
+}
+.summary-table td, .strategy-table td, .score-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.summary-table tr:hover, .strategy-table tr:hover, .score-table tr:hover { background: #1b1f29; }
+.badge { padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+.badge.pass { background: rgba(61,220,132,0.15); color: var(--green); }
+.badge.fail { background: rgba(255,107,107,0.15); color: var(--red); }
+.badge.adopt { background: rgba(61,220,132,0.15); color: var(--green); }
+.badge.reject { background: rgba(255,107,107,0.15); color: var(--red); }
+.badge.review { background: rgba(255,196,0,0.15); color: #ffc400; }
+.example {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 28px;
+}
+.example h2 { margin-top: 0; font-size: 19px; }
+.winner-box {
+  background: rgba(61,220,132,0.08);
+  border: 1px solid rgba(61,220,132,0.3);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 16px 0;
+}
+.winner-box .speedup { color: var(--green); font-weight: 700; font-size: 20px; }
+.mechanism { color: var(--muted); font-size: 13px; margin-top: 6px; }
+pre {
+  background: #0b0d12;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  overflow-x: auto;
+  font-size: 12.5px;
+  font-family: "SF Mono", Consolas, monospace;
+}
+.diff-add { color: var(--green); }
+.diff-del { color: var(--red); }
+.diff-ctx { color: var(--muted); }
+.section-label {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 11px;
+  color: var(--muted);
+  margin: 20px 0 8px;
+  font-weight: 700;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Agentic Performance Optimizer</h1>
+  <div class="subtitle">Generated 2026-07-10 17:32 — Profiler → Optimizer → Benchmarker → Explainer → Scorer</div>
+
+  <div class="section-label">Summary</div>
+  <table class="summary-table">
+    <tr><th>Example</th><th>Best speedup</th><th>Rounds</th><th>Composite score</th></tr>
+    
+          <tr>
+            <td>Nested loop duplicate finder (O(n^2))</td>
+            <td><span class="speedup" style="font-size:14px">266.39x</span></td>
+            <td>1</td>
+            <td>10.0</td>
+          </tr>
+        
+          <tr>
+            <td>Naive recursive Fibonacci (no memoization)</td>
+            <td><span class="speedup" style="font-size:14px">60328.6x</span></td>
+            <td>1</td>
+            <td>10.0</td>
+          </tr>
+        
+          <tr>
+            <td>String += in a loop instead of join()</td>
+            <td><span class="speedup" style="font-size:14px">2.63x</span></td>
+            <td>1</td>
+            <td>6.24</td>
+          </tr>
+        
+          <tr>
+            <td>List membership check instead of set</td>
+            <td><span class="speedup" style="font-size:14px">227.93x</span></td>
+            <td>1</td>
+            <td>10.0</td>
+          </tr>
+        
+          <tr>
+            <td>Redundant sort recomputed every iteration</td>
+            <td><span class="speedup" style="font-size:14px">88.97x</span></td>
+            <td>1</td>
+            <td>9.8</td>
+          </tr>
+        
+  </table>
+
+  
+    <div class="example">
+      <h2>Nested loop duplicate finder (O(n^2))</h2>
+      <div class="winner-box">
+        Best strategy: <strong>Set-based lookup</strong>
+        &nbsp;—&nbsp; <span class="speedup">266.39x faster</span>
+        &nbsp;—&nbsp; solved in 1 round(s)
+        
+        <div class="mechanism">
+          <strong>O(n^2) → O(n)</strong>
+          [genuine_improvement] — Replacing a nested loop with set-based lookup, reducing the time complexity from quadratic to linear
+        </div>
+        
+      </div>
+
+      <div class='section-label'>Strategies tested</div><table class='strategy-table'><tr><th>Strategy</th><th>Result</th><th>Speedup</th><th>Note</th></tr>
+          <tr>
+            <td>Set-based lookup</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td>266.39x</td>
+            <td>—</td>
+          </tr>
+        
+          <tr>
+            <td>List comprehension with collections.Counter</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td>318.33x</td>
+            <td>—</td>
+          </tr>
+        
+          <tr>
+            <td>NumPy-based vectorized solution</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td>223.78x</td>
+            <td>—</td>
+          </tr>
+        </table>
+
+      <div class='section-label'>Composite scores (speed 50% / risk 30% / readability 20%)</div><table class='score-table'><tr><th>Strategy</th><th>Speed</th><th>Risk</th><th>Readability</th><th>Composite</th><th>Recommendation</th></tr>
+          <tr>
+            <td>Set-based lookup</td>
+            <td>10.0</td>
+            <td>0.0</td>
+            <td>10.0</td>
+            <td><strong>10.0</strong></td>
+            <td><span class="badge adopt">adopt</span></td>
+          </tr>
+        
+          <tr>
+            <td>List comprehension with collections.Counter</td>
+            <td>10.0</td>
+            <td>0.0</td>
+            <td>10.0</td>
+            <td><strong>10.0</strong></td>
+            <td><span class="badge adopt">adopt</span></td>
+          </tr>
+        
+          <tr>
+            <td>NumPy-based vectorized solution</td>
+            <td>10.0</td>
+            <td>2.0</td>
+            <td>8.0</td>
+            <td><strong>9.0</strong></td>
+            <td><span class="badge adopt">adopt</span></td>
+          </tr>
+        </table>
+
+      <div class="section-label">Code diff (original → optimized)</div>
+      <pre><span class="diff-ctx">--- original</span>
+<span class="diff-ctx">+++ optimized</span>
+<span class="diff-ctx">@@ -1,20 +1,9 @@</span>
+<span class="diff-del">-&quot;&quot;&quot;</span>
+<span class="diff-del">-Example 1: find duplicate numbers in a list using a naive O(n^2) nested loop.</span>
+<span class="diff-del">-An obvious optimization target: use a set/dict for O(n) lookup instead.</span>
+<span class="diff-del">-&quot;&quot;&quot;</span>
+<span class="diff-del">-</span>
+<span class="diff-del">-</span>
+<span class="diff-ctx"> def run(n: int):</span>
+<span class="diff-del">-    data = [i % (n // 2) for i in range(n)]  # guarantees duplicates exist</span>
+<span class="diff-del">-</span>
+<span class="diff-del">-    duplicates = []</span>
+<span class="diff-del">-    for i in range(len(data)):</span>
+<span class="diff-del">-        for j in range(i + 1, len(data)):</span>
+<span class="diff-del">-            if data[i] == data[j] and data[i] not in duplicates:</span>
+<span class="diff-del">-                duplicates.append(data[i])</span>
+<span class="diff-del">-</span>
+<span class="diff-add">+    data = [i % (n // 2) for i in range(n)]</span>
+<span class="diff-add">+    seen = set()</span>
+<span class="diff-add">+    duplicates = set()</span>
+<span class="diff-add">+    for num in data:</span>
+<span class="diff-add">+        if num in seen:</span>
+<span class="diff-add">+            duplicates.add(num)</span>
+<span class="diff-add">+        seen.add(num)</span>
+<span class="diff-ctx">     return sorted(duplicates)</span>
+<span class="diff-del">-</span>
+<span class="diff-del">-</span>
+<span class="diff-del">-if __name__ == &quot;__main__&quot;:</span>
+<span class="diff-del">-    print(run(2000))</span></pre>
+    </div>
+    
+    <div class="example">
+      <h2>Naive recursive Fibonacci (no memoization)</h2>
+      <div class="winner-box">
+        Best strategy: <strong>Iterative approach</strong>
+        &nbsp;—&nbsp; <span class="speedup">60328.6x faster</span>
+        &nbsp;—&nbsp; solved in 1 round(s)
+        
+        <div class="mechanism">
+          <strong>O(2^n) → O(n)</strong>
+          [genuine_improvement] — Replaces the naive recursive approach with an iterative solution, eliminating the massive redundant recomputation by storing and reusing previously computed values.
+        </div>
+        
+      </div>
+
+      <div class='section-label'>Strategies tested</div><table class='strategy-table'><tr><th>Strategy</th><th>Result</th><th>Speedup</th><th>Note</th></tr>
+          <tr>
+            <td>Memoization with dict</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td>10164.04x</td>
+            <td>—</td>
+          </tr>
+        
+          <tr>
+            <td>Iterative approach</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td>60328.6x</td>
+            <td>—</td>
+          </tr>
+        
+          <tr>
+            <td>Matrix exponentiation</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td>5828.79x</td>
+            <td>—</td>
+          </tr>
+        </table>
+
+      <div class='section-label'>Composite scores (speed 50% / risk 30% / readability 20%)</div><table class='score-table'><tr><th>Strategy</th><th>Speed</th><th>Risk</th><th>Readability</th><th>Composite</th><th>Recommendation</th></tr>
+          <tr>
+            <td>Iterative approach</td>
+            <td>10.0</td>
+            <td>0.0</td>
+            <td>10.0</td>
+            <td><strong>10.0</strong></td>
+            <td><span class="badge adopt">adopt</span></td>
+          </tr>
+        
+          <tr>
+            <td>Memoization with dict</td>
+            <td>10.0</td>
+            <td>0.0</td>
+            <td>9.0</td>
+            <td><strong>9.8</strong></td>
+            <td><span class="badge adopt">adopt</span></td>
+          </tr>
+        
+          <tr>
+            <td>Matrix exponentiation</td>
+            <td>10.0</td>
+            <td>2.0</td>
+            <td>8.0</td>
+            <td><strong>9.0</strong></td>
+            <td><span class="badge adopt">adopt</span></td>
+          </tr>
+        </table>
+
+      <div class="section-label">Code diff (original → optimized)</div>
+      <pre><span class="diff-ctx">--- original</span>
+<span class="diff-ctx">+++ optimized</span>
+<span class="diff-ctx">@@ -1,17 +1,10 @@</span>
+<span class="diff-del">-&quot;&quot;&quot;</span>
+<span class="diff-del">-Example 2: naive recursive Fibonacci with massive redundant recomputation.</span>
+<span class="diff-del">-Optimization target: memoization (cache) or iterative approach.</span>
+<span class="diff-del">-&quot;&quot;&quot;</span>
+<span class="diff-del">-</span>
+<span class="diff-del">-</span>
+<span class="diff-ctx"> def run(n: int):</span>
+<span class="diff-del">-    def fib(k):</span>
+<span class="diff-del">-        if k &lt;= 1:</span>
+<span class="diff-del">-            return k</span>
+<span class="diff-del">-        return fib(k - 1) + fib(k - 2)</span>
+<span class="diff-del">-</span>
+<span class="diff-del">-    return fib(n)</span>
+<span class="diff-del">-</span>
+<span class="diff-add">+    if n &lt;= 1:</span>
+<span class="diff-add">+        return n</span>
+<span class="diff-add">+    a, b = 0, 1</span>
+<span class="diff-add">+    for _ in range(2, n + 1):</span>
+<span class="diff-add">+        a, b = b, a + b</span>
+<span class="diff-add">+    return b</span>
+<span class="diff-ctx"> </span>
+<span class="diff-ctx"> if __name__ == &quot;__main__&quot;:</span>
+<span class="diff-ctx">     print(run(28))</span></pre>
+    </div>
+    
+    <div class="example">
+      <h2>String += in a loop instead of join()</h2>
+      <div class="winner-box">
+        Best strategy: <strong>List and Join</strong>
+        &nbsp;—&nbsp; <span class="speedup">2.63x faster</span>
+        &nbsp;—&nbsp; solved in 1 round(s)
+        
+        <div class="mechanism">
+          <strong>O(n^2) → O(n)</strong>
+          [genuine_improvement] — Replacing string concatenation with list append and join, avoiding the overhead of creating a new string and copying the entire string in each iteration
+        </div>
+        
+      </div>
+
+      <div class='section-label'>Strategies tested</div><table class='strategy-table'><tr><th>Strategy</th><th>Result</th><th>Speedup</th><th>Note</th></tr>
+          <tr>
+            <td>List and Join</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td>2.63x</td>
+            <td>—</td>
+          </tr>
+        
+          <tr>
+            <td>Generator Expression with Join</td>
+            <td><span class="badge fail">FAIL</span></td>
+            <td>3.16x</td>
+            <td>Output mismatch: optimized result differs from original</td>
+          </tr>
+        
+          <tr>
+            <td>String Formatting with List Comprehension</td>
+            <td><span class="badge fail">FAIL</span></td>
+            <td>5.32x</td>
+            <td>Output mismatch: optimized result differs from original</td>
+          </tr>
+        </table>
+
+      <div class='section-label'>Composite scores (speed 50% / risk 30% / readability 20%)</div><table class='score-table'><tr><th>Strategy</th><th>Speed</th><th>Risk</th><th>Readability</th><th>Composite</th><th>Recommendation</th></tr>
+          <tr>
+            <td>List and Join</td>
+            <td>2.47</td>
+            <td>0.0</td>
+            <td>10.0</td>
+            <td><strong>6.24</strong></td>
+            <td><span class="badge review">review</span></td>
+          </tr>
+        </table>
+
+      <div class="section-label">Code diff (original → optimized)</div>
+      <pre><span class="diff-ctx">--- original</span>
+<span class="diff-ctx">+++ optimized</span>
+<span class="diff-ctx">@@ -1,16 +1,8 @@</span>
+<span class="diff-del">-&quot;&quot;&quot;</span>
+<span class="diff-del">-Example 3: building a large string with += in a loop (O(n^2) due to string</span>
+<span class="diff-del">-immutability in Python -- each += creates a new string and copies everything).</span>
+<span class="diff-del">-Optimization target: build a list and use &#x27;&#x27;.join() instead.</span>
+<span class="diff-del">-&quot;&quot;&quot;</span>
+<span class="diff-del">-</span>
+<span class="diff-del">-</span>
+<span class="diff-ctx"> def run(n: int):</span>
+<span class="diff-del">-    result = &quot;&quot;</span>
+<span class="diff-add">+    result = []</span>
+<span class="diff-ctx">     for i in range(n):</span>
+<span class="diff-del">-        result += str(i) + &quot;,&quot;</span>
+<span class="diff-del">-    return result</span>
+<span class="diff-del">-</span>
+<span class="diff-add">+        result.append(str(i) + &#x27;,&#x27;)</span>
+<span class="diff-add">+    return &#x27;&#x27;.join(result)</span>
+<span class="diff-ctx"> </span>
+<span class="diff-ctx"> if __name__ == &quot;__main__&quot;:</span>
+<span class="diff-ctx">     print(run(20000)[:50])</span></pre>
+    </div>
+    
+    <div class="example">
+      <h2>List membership check instead of set</h2>
+      <div class="winner-box">
+        Best strategy: <strong>List Comprehension with Set Intersection</strong>
+        &nbsp;—&nbsp; <span class="speedup">227.93x faster</span>
+        &nbsp;—&nbsp; solved in 1 round(s)
+        
+        <div class="mechanism">
+          <strong>O(n*m) → O(n + m)</strong>
+          [genuine_improvement] — Converting lists to sets allows for O(1) average lookup time, replacing the O(n) membership check in the original code with a set intersection operation
+        </div>
+        
+      </div>
+
+      <div class='section-label'>Strategies tested</div><table class='strategy-table'><tr><th>Strategy</th><th>Result</th><th>Speedup</th><th>Note</th></tr>
+          <tr>
+            <td>Set Lookup Optimization</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td>195.17x</td>
+            <td>—</td>
+          </tr>
+        
+          <tr>
+            <td>List Comprehension with Set Intersection</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td>227.93x</td>
+            <td>—</td>
+          </tr>
+        
+          <tr>
+            <td>Numpy Array Intersection</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td>239.39x</td>
+            <td>—</td>
+          </tr>
+        </table>
+
+      <div class='section-label'>Composite scores (speed 50% / risk 30% / readability 20%)</div><table class='score-table'><tr><th>Strategy</th><th>Speed</th><th>Risk</th><th>Readability</th><th>Composite</th><th>Recommendation</th></tr>
+          <tr>
+            <td>List Comprehension with Set Intersection</td>
+            <td>10.0</td>
+            <td>0.0</td>
+            <td>10.0</td>
+            <td><strong>10.0</strong></td>
+            <td><span class="badge adopt">adopt</span></td>
+          </tr>
+        
+          <tr>
+            <td>Set Lookup Optimization</td>
+            <td>10.0</td>
+            <td>0.0</td>
+            <td>9.0</td>
+            <td><strong>9.8</strong></td>
+            <td><span class="badge adopt">adopt</span></td>
+          </tr>
+        
+          <tr>
+            <td>Numpy Array Intersection</td>
+            <td>10.0</td>
+            <td>2.0</td>
+            <td>9.0</td>
+            <td><strong>9.2</strong></td>
+            <td><span class="badge adopt">adopt</span></td>
+          </tr>
+        </table>
+
+      <div class="section-label">Code diff (original → optimized)</div>
+      <pre><span class="diff-ctx">--- original</span>
+<span class="diff-ctx">+++ optimized</span>
+<span class="diff-ctx">@@ -1,21 +1,10 @@</span>
+<span class="diff-del">-&quot;&quot;&quot;</span>
+<span class="diff-del">-Example 4: finding common elements between two lists using a nested loop</span>
+<span class="diff-del">-(checking membership via &#x27;in&#x27; on a list is O(n) each time -&gt; O(n*m) total).</span>
+<span class="diff-del">-Optimization target: convert one list to a set for O(1) average lookup.</span>
+<span class="diff-del">-&quot;&quot;&quot;</span>
+<span class="diff-add">+def run(n: int):</span>
+<span class="diff-add">+    set_a = set(range(n))</span>
+<span class="diff-add">+    set_b = set(range(n // 2, n + n // 2))</span>
+<span class="diff-ctx"> </span>
+<span class="diff-add">+    common = sorted(list(set_a &amp; set_b))</span>
+<span class="diff-ctx"> </span>
+<span class="diff-del">-def run(n: int):</span>
+<span class="diff-del">-    list_a = list(range(n))</span>
+<span class="diff-del">-    list_b = list(range(n // 2, n + n // 2))</span>
+<span class="diff-del">-</span>
+<span class="diff-del">-    common = []</span>
+<span class="diff-del">-    for item in list_a:</span>
+<span class="diff-del">-        if item in list_b:  # O(n) membership check on a list</span>
+<span class="diff-del">-            common.append(item)</span>
+<span class="diff-del">-</span>
+<span class="diff-del">-    return sorted(common)</span>
+<span class="diff-del">-</span>
+<span class="diff-add">+    return common</span>
+<span class="diff-ctx"> </span>
+<span class="diff-ctx"> if __name__ == &quot;__main__&quot;:</span>
+<span class="diff-ctx">     print(run(3000)[:10])</span></pre>
+    </div>
+    
+    <div class="example">
+      <h2>Redundant sort recomputed every iteration</h2>
+      <div class="winner-box">
+        Best strategy: <strong>Using a dictionary for indexing</strong>
+        &nbsp;—&nbsp; <span class="speedup">88.97x faster</span>
+        &nbsp;—&nbsp; solved in 1 round(s)
+        
+        <div class="mechanism">
+          <strong>O(n*m*log(n)) → O(n*log(n) + m)</strong>
+          [genuine_improvement] — The original code had a redundant sorting operation inside a loop, which has been removed in the optimized code. Additionally, a dictionary is used for faster indexing, reducing the time complexity from O(n) to O(1) for the index lookup.
+        </div>
+        
+      </div>
+
+      <div class='section-label'>Strategies tested</div><table class='strategy-table'><tr><th>Strategy</th><th>Result</th><th>Speedup</th><th>Note</th></tr>
+          <tr>
+            <td>Hoisting Invariant Computation</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td>2.14x</td>
+            <td>—</td>
+          </tr>
+        
+          <tr>
+            <td>Using a set for membership testing</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td>2.95x</td>
+            <td>—</td>
+          </tr>
+        
+          <tr>
+            <td>Using a dictionary for indexing</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td>88.97x</td>
+            <td>—</td>
+          </tr>
+        </table>
+
+      <div class='section-label'>Composite scores (speed 50% / risk 30% / readability 20%)</div><table class='score-table'><tr><th>Strategy</th><th>Speed</th><th>Risk</th><th>Readability</th><th>Composite</th><th>Recommendation</th></tr>
+          <tr>
+            <td>Using a dictionary for indexing</td>
+            <td>10.0</td>
+            <td>0.0</td>
+            <td>9.0</td>
+            <td><strong>9.8</strong></td>
+            <td><span class="badge adopt">adopt</span></td>
+          </tr>
+        
+          <tr>
+            <td>Using a set for membership testing</td>
+            <td>2.77</td>
+            <td>0.0</td>
+            <td>9.0</td>
+            <td><strong>6.18</strong></td>
+            <td><span class="badge review">review</span></td>
+          </tr>
+        
+          <tr>
+            <td>Hoisting Invariant Computation</td>
+            <td>1.94</td>
+            <td>0.0</td>
+            <td>10.0</td>
+            <td><strong>5.97</strong></td>
+            <td><span class="badge review">review</span></td>
+          </tr>
+        </table>
+
+      <div class="section-label">Code diff (original → optimized)</div>
+      <pre><span class="diff-ctx">--- original</span>
+<span class="diff-ctx">+++ optimized</span>
+<span class="diff-ctx">@@ -1,22 +1,10 @@</span>
+<span class="diff-del">-&quot;&quot;&quot;</span>
+<span class="diff-del">-Example 5: redundant repeated computation -- sorting the same reference list</span>
+<span class="diff-del">-inside a loop on every iteration, when it only needs to be sorted once.</span>
+<span class="diff-del">-Optimization target: hoist the invariant computation (sort) out of the loop.</span>
+<span class="diff-del">-&quot;&quot;&quot;</span>
+<span class="diff-del">-</span>
+<span class="diff-del">-</span>
+<span class="diff-ctx"> def run(n: int):</span>
+<span class="diff-ctx">     reference = list(range(n, 0, -1))  # unsorted, reversed</span>
+<span class="diff-ctx">     queries = list(range(0, n, 7))</span>
+<span class="diff-del">-</span>
+<span class="diff-del">-    results = []</span>
+<span class="diff-del">-    for q in queries:</span>
+<span class="diff-del">-        sorted_ref = sorted(reference)  # recomputed every iteration, unnecessarily</span>
+<span class="diff-del">-        if q in sorted_ref:</span>
+<span class="diff-del">-            results.append(sorted_ref.index(q))</span>
+<span class="diff-del">-</span>
+<span class="diff-add">+    sorted_ref = sorted(reference)</span>
+<span class="diff-add">+    ref_dict = {x: i for i, x in enumerate(sorted_ref)}  # for faster indexing</span>
+<span class="diff-add">+    results = [ref_dict[q] for q in queries if q in ref_dict]</span>
+<span class="diff-ctx">     return results</span>
+<span class="diff-del">-</span>
+<span class="diff-ctx"> </span>
+<span class="diff-ctx"> if __name__ == &quot;__main__&quot;:</span>
+<span class="diff-ctx">     print(run(1500)[:10])</span></pre>
+    </div>
+    
+</div>
+</body>
+</html>
