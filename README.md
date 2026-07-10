@@ -1,7 +1,6 @@
 # Agentic Performance Optimizer
 
-A multi-agent system that takes slow Python code and makes it faster — automatically, with proof. Built for the AI Club "Multi-Agent Collaboration System" challenge.
-
+A multi-agent system that takes slow Python code and makes it faster — automatically, with proof.
 ## Why this task
 
 Instead of a single LLM call optimizing code and being trusted blindly, this system splits the work across specialized agents so that every decision — "is this actually correct?", "is it actually faster?", "is it actually safe?" — is backed by real execution and measurement, not LLM opinion.
